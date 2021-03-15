@@ -1,7 +1,7 @@
 application:
   jwt:
     secret: javainuse
-    token-ttl-in-minutes: 30
+    token-ttl-in-minutes: 30 # срок жизни токена храним в бд; тот срок жизни, который лежит в самом токене, ставим бесконечность.
   mobile-pass-ttl-in-minutes: 2
   mobile-code-length: 4
   max-bad-logins: 3
