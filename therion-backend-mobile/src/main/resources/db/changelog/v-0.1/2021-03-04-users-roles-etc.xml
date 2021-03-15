@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet author="g.eremeev@azoft.com" id="v-0.1/2020-06-26-users-table">
+        <createTable tableName="mobile_users">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users_id" />
+            </column>
+
+            <column name="phone" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uc_users_phone"/>
+            </column>
+
+            <column name="password" type="varchar(255)"/>
+            <column name="name" type="varchar(255)"/>
+            <column name="password_sent_at" type="timestamp"/>
+            <column name="first_bad_login_date" type="timestamp"/>
+            <column name="bad_login_amount" type="integer" defaultValue="0"/>
+            <column name="login_blocked_until" type="timestamp"/>
+            <column name="created" type="timestamp"/>
+            <column name="updated" type="timestamp"/>
+            <column name="is_deleted" type="boolean"/>
+
+        </createTable>
+
+        <createTable tableName="mobile_roles">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"
+                             primaryKeyName="pk_mobile_roles_id"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uc_mobile_roles_name"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="mobile_user_mobile_role">
+
+            <column name="mobile_user_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="mobile_role_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+
+        <addForeignKeyConstraint baseColumnNames="mobile_user_id"
+                                 baseTableName="mobile_user_mobile_role"
+                                 constraintName="fk_mobile_user_mobile_role_mobile_user_id"
+                                 onDelete="RESTRICT"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="mobile_users"/>
+
+        <addForeignKeyConstraint baseColumnNames="mobile_role_id"
+                                 baseTableName="mobile_user_mobile_role"
+                                 constraintName="fk_mobile_user_mobile_role_mobile_role_id"
+                                 onDelete="RESTRICT"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="mobile_roles"/>
+
+        <addPrimaryKey columnNames="mobile_user_id, mobile_role_id"
+                       constraintName="pk_mobile_user_mobile_role"
+                       tableName="mobile_user_mobile_role"/>
+    </changeSet>
+
+
+    <changeSet author="g.eremeev@azoft.com" id="v-0.1/2021-03-05-insert-mobile_roles">
+        <sql>
+            INSERT INTO mobile_roles(name) VALUES('ROLE_MOBILE_USER');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

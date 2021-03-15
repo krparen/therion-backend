@@ -1,0 +1,30 @@
+application:
+  jwt:
+    secret: javainuse
+    token-ttl-in-minutes: 30
+  mobile-pass-ttl-in-minutes: 2
+  mobile-code-length: 4
+  max-bad-logins: 3
+  login-block-duration-in-minutes: 30
+  mobile-code-period-in-seconds: 60
+
+spring:
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        order_updates: true
+        order_inserts: true
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+    hikari:
+      maximum-pool-size: 5
+    url: jdbc:postgresql://localhost:5432/intercom
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog.xml

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet author="g.eremeev@azoft.com" id="v-0.1/2021-03-12-mobile-token-table">
+        <createTable tableName="mobile_token">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_mobile_token_id" />
+            </column>
+
+            <column name="mobile_user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="text">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uc_mobile_token"/>
+            </column>
+            <column name="expire_at" type="timestamp"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="mobile_user_id"
+                                 baseTableName="mobile_token"
+                                 constraintName="fk_mobile_token_mobile_user_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="mobile_users"/>
+    </changeSet>
+
+
+</databaseChangeLog>
